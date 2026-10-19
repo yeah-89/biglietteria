@@ -60,12 +60,11 @@ public class SocketHandler implements Runnable{
                     str="";
                     break;
                 case "BUY":
-
+                    
                     
                     break;
                 case "QUIT":
-                    
-                    break;
+                    return;
             
                 default:
                     break;
