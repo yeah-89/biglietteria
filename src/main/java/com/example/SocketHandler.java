@@ -21,12 +21,12 @@ public class SocketHandler implements Runnable{
         disponibilita.put("Pit", 30);
         disponibilita.put("Parterre", 60);
     }
-    
-    
-
+ 
     @Override
     public void run() {
         String nome;
+        boolean var=true;
+        String scelta;
         try (
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
@@ -37,9 +37,43 @@ public class SocketHandler implements Runnable{
             do{
                 out.println("Login: ");
                 nome =in.readLine();
-                                
-            }while(user.contains(nome));
+                
+                if(user.contains(nome)){
+                    out.println("ERR USERINUSE");
+                }else{
+                    out.println("OK");
+                    var=false;
+                }
+            }while(var);
             user.add(nome);
+
+            while(true){
+                scelta=in.readLine();
+
+                switch (scelta) {
+                case "N":
+                    String str="";
+                    for(String s : disponibilita.keySet()){
+                        str += s +": " + disponibilita.get(s)+ "\n";
+                    }
+                    out.println(str);
+                    str="";
+                    break;
+                case "BUY":
+
+                    
+                    break;
+                case "QUIT":
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+
+            }
+
+            
             
             
              
