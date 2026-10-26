@@ -66,7 +66,7 @@ public class SocketHandler implements Runnable{
 
                     
                     synchronized(lock){
-                        if(parti[0].toLowerCase()!="gold" && parti[0].toLowerCase()!="pit" && parti[0].toLowerCase()!="parterre"){
+                        if(parti[0].toLowerCase().equals("gold") && parti[0].toLowerCase().equals("pit") && parti[0].toLowerCase().equals("parterre")){
                             out.println("ERR UNKNOWNTYPE");
                         }else{
                             if(parti.length==1){
