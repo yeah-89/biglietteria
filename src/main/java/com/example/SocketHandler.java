@@ -17,9 +17,9 @@ public class SocketHandler implements Runnable{
     public SocketHandler(Socket so){
         s=so;
 
-        disponibilita.put("Gold", 10);
-        disponibilita.put("Pit", 30);
-        disponibilita.put("Parterre", 60);
+        disponibilita.put("gold", 10);
+        disponibilita.put("pit", 30);
+        disponibilita.put("parterre", 60);
     }
  
     @Override
@@ -60,13 +60,34 @@ public class SocketHandler implements Runnable{
                     str="";
                     break;
                 case "BUY":
+                    String inp= in.readLine();
+                    String parti[] = inp.split(" ", 2);
                     
+                    if(parti[0].toLowerCase()!="gold" && parti[0].toLowerCase()!="pit" && parti[0].toLowerCase()!="parterre"){
+                        out.println("ERR UNKNOWNTYPE");
+                    }else{
+                        if(parti.length==1){
+                            parti[1];
+                        }
+                        try {
+                            if(disponibilita.get(parti[0])>= Integer.parseInt((parti[1]))){
+                                disponibilita.put(parti[0], (disponibilita.get(parti[1])- Integer.parseInt((parti[1]))));
+                                out.println("OK");
+                            }else{
+                                out.println("KO");
+                            }
+                        } catch (Exception e) {
+                            out.println("ERR SYNTAX");
+                        }
+                        
+                    }
                     
                     break;
                 case "QUIT":
                     return;
             
                 default:
+                    out.println("ERR UNKNOWNCMD");
                     break;
             }
 
