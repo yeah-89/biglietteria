@@ -12,6 +12,7 @@ public class SocketHandler implements Runnable{
     private final Socket s;
     Map<String,Integer> disponibilita = new HashMap<>();
     ArrayList<String> user= new ArrayList<>();
+    private final Object lock=new Object();
 
 
     public SocketHandler(Socket so){
@@ -62,26 +63,27 @@ public class SocketHandler implements Runnable{
                 case "BUY":
                     String inp= in.readLine();
                     String parti[] = inp.split(" ", 2);
+
                     
-                    if(parti[0].toLowerCase()!="gold" && parti[0].toLowerCase()!="pit" && parti[0].toLowerCase()!="parterre"){
-                        out.println("ERR UNKNOWNTYPE");
-                    }else{
-                        if(parti.length==1){
-                            parti[1];
-                        }
-                        try {
-                            if(disponibilita.get(parti[0])>= Integer.parseInt((parti[1]))){
-                                disponibilita.put(parti[0], (disponibilita.get(parti[1])- Integer.parseInt((parti[1]))));
-                                out.println("OK");
-                            }else{
-                                out.println("KO");
+                    synchronized(lock){
+                        if(parti[0].toLowerCase()!="gold" && parti[0].toLowerCase()!="pit" && parti[0].toLowerCase()!="parterre"){
+                            out.println("ERR UNKNOWNTYPE");
+                        }else{
+                            if(parti.length==1){
+                                parti[1]="1";
                             }
-                        } catch (Exception e) {
-                            out.println("ERR SYNTAX");
+                            try {
+                                if(disponibilita.get(parti[0])>= Integer.parseInt((parti[1]))){
+                                    disponibilita.put(parti[0], (disponibilita.get(parti[1])- Integer.parseInt((parti[1]))));
+                                    out.println("OK");
+                                }else{
+                                    out.println("KO");
+                                }
+                            } catch (Exception e) {
+                                out.println("ERR SYNTAX");
+                            } 
                         }
-                        
-                    }
-                    
+                    }                
                     break;
                 case "QUIT":
                     return;
